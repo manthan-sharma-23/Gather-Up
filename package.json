@@ -1,5 +1,5 @@
 {
-  "name": "Gather_Up",
+  "name": "gatherup",
   "private": true,
   "scripts": {
     "build": "turbo build",
@@ -16,5 +16,6 @@
   "packageManager": "pnpm@8.9.0",
   "engines": {
     "node": ">=18"
-  }
+  },
+  "dependencies": {}
 }
