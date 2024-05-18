@@ -4,6 +4,8 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { AuthModule } from './modules/auth/auth.module';
 
+import { DatabaseService } from './engine/database/database.service';
+
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -12,6 +14,7 @@ import { AuthModule } from './modules/auth/auth.module';
     }),
     AuthModule,
   ],
+
   providers: [],
 })
 export class AppModule {}
