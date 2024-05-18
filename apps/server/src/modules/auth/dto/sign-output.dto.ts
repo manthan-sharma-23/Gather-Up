@@ -5,3 +5,4 @@ export class SignOutputDto {
   @Field()
   token: string;
 }
+

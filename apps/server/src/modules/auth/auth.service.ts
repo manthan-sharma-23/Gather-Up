@@ -95,6 +95,8 @@ export class AuthService {
     }
   }
 
+  
+
   private constructJwtAccessToken(id: string, email: string, secret: string) {
     return jwt.sign({ id, email }, secret);
   }

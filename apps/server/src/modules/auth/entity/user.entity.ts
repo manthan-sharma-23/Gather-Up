@@ -13,4 +13,5 @@ export class User {
 
   @Field()
   hashedPassword: string;
+  
 }
