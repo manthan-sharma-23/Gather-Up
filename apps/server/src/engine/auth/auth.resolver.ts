@@ -7,6 +7,7 @@ import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/core/guards/authorize.guard';
 import { User } from './entity/user.entity';
 import { GqlContext } from 'src/core/config/gql';
+import { BaseUserObject } from '../models/user.models';
 
 @Resolver()
 export class AuthResolver {
@@ -33,7 +34,9 @@ export class AuthResolver {
 
   @Query(() => User)
   @UseGuards(AuthGuard)
-  async getUser(@Context(GqlContext.user) user: any): Promise<string> {
+  async getUser(
+    @Context(GqlContext.user) user: BaseUserObject,
+  ): Promise<string> {
     return JSON.stringify(user);
   }
 }

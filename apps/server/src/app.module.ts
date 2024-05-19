@@ -6,6 +6,7 @@ import { join } from 'path';
 import { DatabaseService } from './engine/database/database.service';
 import { AuthModule } from './engine/auth/auth.module';
 import { CommunityModule } from './modules/community-module/community.module';
+import { InviteModule } from './modules/invite-module/invite-module.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { CommunityModule } from './modules/community-module/community.module';
     }),
     AuthModule,
     CommunityModule,
+    InviteModule,
   ],
 
   providers: [DatabaseService],
