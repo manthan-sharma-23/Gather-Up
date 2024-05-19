@@ -51,19 +51,23 @@ model User {
   communityUsers     CommunityUser[]
   participatedEvents EventParticipant[]
   likedEvents        EventLike[]
+  ownedCommunities   Community[]
   communityInvites   CommunityInvite[]
   eventInvites       EventInvite[]
 }
 
 model Community {
-  id           String            @id @default(cuid())
+  id           String  @id @default(cuid())
   name         String
-  hashtag      String            @unique
+  hashtag      String  @unique
   eventsLogged Event[]
-  createdAt    DateTime          @default(now())
-  updatedAt    DateTime          @updatedAt
-  users        CommunityUser[]
-  invites      CommunityInvite[]
+
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  users     CommunityUser[]
+  invites   CommunityInvite[]
+  User      User?             @relation(fields: [createdBy], references: [id])
+  createdBy String?
 }
 
 model CommunityUser {

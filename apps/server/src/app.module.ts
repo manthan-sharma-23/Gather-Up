@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
-import { AuthModule } from './modules/auth/auth.module';
 
 import { DatabaseService } from './engine/database/database.service';
+import { AuthModule } from './engine/auth/auth.module';
+import { CommunityModule } from './modules/community-module/community.module';
 
 @Module({
   imports: [
@@ -13,8 +14,9 @@ import { DatabaseService } from './engine/database/database.service';
       autoSchemaFile: join(process.cwd(), 'src/engine/gql/schema.gql'),
     }),
     AuthModule,
+    CommunityModule,
   ],
 
-  providers: [],
+  providers: [DatabaseService],
 })
 export class AppModule {}
