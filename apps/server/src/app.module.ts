@@ -7,6 +7,7 @@ import { DatabaseService } from './engine/database/database.service';
 import { AuthModule } from './engine/auth/auth.module';
 import { CommunityModule } from './modules/community-module/community.module';
 import { InviteModule } from './modules/invite-module/invite-module.module';
+import { EventModule } from './modules/event-module/event.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { InviteModule } from './modules/invite-module/invite-module.module';
     AuthModule,
     CommunityModule,
     InviteModule,
+    EventModule,
   ],
 
   providers: [DatabaseService],

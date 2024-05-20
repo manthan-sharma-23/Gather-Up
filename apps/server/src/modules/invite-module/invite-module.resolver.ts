@@ -23,4 +23,6 @@ export class InviteModuleResolver {
       admin: user,
     });
   }
+
+  
 }
