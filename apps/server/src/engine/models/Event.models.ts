@@ -14,7 +14,9 @@ export enum EventRoles {
 
 export enum EventStatus {
   SCHEDULED = 'SCHEDULED',
-  MANUAL = 'MANUAL',
+  ONGOING = 'ONGOING',
+  COMPLETED = 'COMPLETED',
+  CANCELLED = 'CANCELLED',
 }
 
 @ObjectType()

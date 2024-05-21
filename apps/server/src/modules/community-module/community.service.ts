@@ -37,6 +37,12 @@ export class CommunityService {
       },
     });
 
+    await this.databaseService.communityCalender.create({
+      data: {
+        communityId: createCommunityQuery.id,
+      },
+    });
+
     await this.databaseService.communityUser.create({
       data: {
         communityId: createCommunityQuery.id,

@@ -41,6 +41,18 @@ export class AuthService {
         },
       });
 
+      await this.databaseService.userCalender.create({
+        data: {
+          userId: createUserQuery.id,
+        },
+      });
+
+      await this.databaseService.mergedCalendar.create({
+        data: {
+          userId: createUserQuery.id,
+        },
+      });
+
       const token = this.constructJwtAccessToken(
         createUserQuery.id,
         createUserQuery.email,
@@ -94,8 +106,6 @@ export class AuthService {
       });
     }
   }
-
-  
 
   private constructJwtAccessToken(id: string, email: string, secret: string) {
     return jwt.sign({ id, email }, secret);

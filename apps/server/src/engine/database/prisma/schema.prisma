@@ -33,7 +33,9 @@ enum EventRoles {
 
 enum EventStatus {
   SCHEDULED
-  MANUAL
+  ONGOING
+  COMPLETED
+  CANCELLED
 }
 
 enum InviteStatus {
@@ -43,32 +45,39 @@ enum InviteStatus {
 }
 
 model User {
-  id                 String             @id @default(uuid())
-  name               String?
-  email              String             @unique
-  hashedPassword     String
-  createdAt          DateTime           @default(now())
-  updatedAt          DateTime           @updatedAt
-  communityUsers     CommunityUser[]
-  participatedEvents EventParticipant[]
-  likedEvents        EventLike[]
-  ownedCommunities   Community[]
-  communityInvites   CommunityInvite[]
-  eventInvites       EventInvite[]
+  id               String             @id @default(uuid())
+  name             String?
+  email            String             @unique
+  hashedPassword   String
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  communityUsers   CommunityUser[]
+  ownedCommunities Community[]
+  communityInvites CommunityInvite[]
+  eventInvites     EventInvite[]
+  EventParticipant EventParticipant[]
+  EventLike        EventLike[]
+  MergedCalendar   MergedCalendar?    @relation(fields: [mergedCalendarId], references: [id])
+  mergedCalendarId Int?
+
+  UserCalender   UserCalender? @relation(fields: [userCalenderId], references: [id])
+  userCalenderId String?
 }
 
 model Community {
-  id           String  @id @default(cuid())
-  name         String
-  hashtag      String  @unique
-  eventsLogged Event[]
-
+  id        String            @id @default(cuid())
+  name      String
+  hashtag   String            @unique
   createdAt DateTime          @default(now())
   updatedAt DateTime          @updatedAt
   users     CommunityUser[]
   invites   CommunityInvite[]
   User      User?             @relation(fields: [createdBy], references: [id])
   createdBy String?
+  Event     Event[]
+
+  CommunityCalender   CommunityCalender? @relation(fields: [communityCalenderId], references: [id])
+  communityCalenderId String?
 }
 
 model CommunityUser {
@@ -82,22 +91,27 @@ model CommunityUser {
 }
 
 model Event {
-  id            Int                @id @default(autoincrement())
-  name          String
-  description   String?            @db.Text
-  createdAt     DateTime           @default(now())
-  startedAt     DateTime           @default(now())
-  endAt         DateTime?
-  scope         EventScope         @default(GLOBAL)
-  location      String?
-  status        EventStatus        @default(SCHEDULED)
-  userId        String
-  Community     Community?         @relation(fields: [communityId], references: [id])
-  communityId   String?
-  participants  EventParticipant[]
-  likes         EventLike[]
-  eventComments EventComment[]
-  invites       EventInvite[]
+  id                Int                @id @default(autoincrement())
+  name              String
+  description       String?            @db.Text
+  createdAt         DateTime           @default(now())
+  startedAt         DateTime           @default(now())
+  endAt             DateTime?
+  scope             EventScope         @default(GLOBAL)
+  location          String?
+  status            EventStatus        @default(SCHEDULED)
+  userId            String
+  Community         Community?         @relation(fields: [communityId], references: [id])
+  communityId       String?
+  mainLink          String?
+  participants      EventParticipant[]
+  likes             EventLike[]
+  eventComments     EventComment[]
+  invites           EventInvite[]
+  UserCalender      UserCalender?      @relation(fields: [userCalenderId], references: [id])
+  userCalenderId    String?
+  CommuniCalender   CommunityCalender? @relation(fields: [communiCalenderId], references: [id])
+  communiCalenderId String?
 }
 
 model EventParticipant {
@@ -107,8 +121,6 @@ model EventParticipant {
   userId  String?
   Event   Event?     @relation(fields: [eventId], references: [id])
   eventId Int?
-
-  EventComment EventComment[]
 }
 
 model EventLike {
@@ -120,14 +132,12 @@ model EventLike {
 }
 
 model EventComment {
-  id                 String           @id @default(cuid())
-  comment            String
-  parentId           String?
-  createdAt          DateTime         @default(now())
-  eventParticipant   EventParticipant @relation(fields: [eventParticipantId], references: [id])
-  eventParticipantId Int
-  Event              Event?           @relation(fields: [eventId], references: [id])
-  eventId            Int?
+  id        String   @id @default(cuid())
+  comment   String
+  parentId  String?
+  createdAt DateTime @default(now())
+  Event     Event?   @relation(fields: [eventId], references: [id])
+  eventId   Int?
 }
 
 model CommunityInvite {
@@ -146,4 +156,32 @@ model EventInvite {
   userId  String?
   Event   Event?       @relation(fields: [eventId], references: [id])
   eventId Int?
+}
+
+model UserCalender {
+  id     String @id @default(cuid())
+  userId String
+
+  events           Event[]
+  MergedCalendar   MergedCalendar? @relation(fields: [mergedCalendarId], references: [id])
+  mergedCalendarId Int?
+  User             User[]
+}
+
+model CommunityCalender {
+  id          String @id @default(cuid())
+  communityId String
+
+  events           Event[]
+  MergedCalendar   MergedCalendar? @relation(fields: [mergedCalendarId], references: [id])
+  mergedCalendarId Int?
+  Community        Community[]
+}
+
+model MergedCalendar {
+  id                 Int                 @id @default(autoincrement())
+  userId             String
+  User               User[]
+  userCalenders      UserCalender[]
+  communityCalenders CommunityCalender[]
 }
