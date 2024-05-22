@@ -14,6 +14,8 @@ import { EventModule } from './modules/event-module/event.module';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/engine/gql/schema.gql'),
+      sortSchema: true,
+      playground: true,
     }),
     AuthModule,
     CommunityModule,

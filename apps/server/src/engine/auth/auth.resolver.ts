@@ -1,13 +1,8 @@
-import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { HelloDto } from './dto/hello.dto';
 import { SignOutputDto } from './dto/sign-output.dto';
 import { SignInputArgs } from './args/sign-arg';
-import { UseGuards } from '@nestjs/common';
-import { AuthGuard } from 'src/core/guards/authorize.guard';
-import { User } from './entity/user.entity';
-import { GqlContext } from 'src/core/config/gql';
-import { BaseUserObject } from '../models/user.models';
 
 @Resolver()
 export class AuthResolver {
@@ -29,14 +24,7 @@ export class AuthResolver {
   async signin(
     @Args('SignInputArgs') arg: SignInputArgs,
   ): Promise<SignOutputDto> {
+    console.log(arg);
     return await this.authService.signIn(arg);
-  }
-
-  @Query(() => User)
-  @UseGuards(AuthGuard)
-  async getUser(
-    @Context(GqlContext.user) user: BaseUserObject,
-  ): Promise<string> {
-    return JSON.stringify(user);
   }
 }
