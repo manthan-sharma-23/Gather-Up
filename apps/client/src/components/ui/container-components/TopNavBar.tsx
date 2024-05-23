@@ -7,7 +7,12 @@ import { Link } from "react-router-dom";
 import { Hrefs } from "@/lib/config/href";
 import { IoMdAdd } from "react-icons/io";
 import { LiaCalendarAltSolid } from "react-icons/lia";
-import { Dropdown } from "@mui/base";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "../dropdown-menu";
+import ProfileAvatarDropDown from "../ui-utilities/ProfileAvatarDropDown";
 
 const TopNavBar = () => {
   const user = useRecoilValue(UserAtom);
@@ -45,15 +50,20 @@ const TopNavBar = () => {
           Create Event
         </Button>
         <div className="cursor-pointer hover:scale-[1.05] rounded-full shadow-sm hover:opacity-85 p-1 bg-palewhite">
-          <Dropdown>
-            <Avatar
-              borderColor={"#F5F5F5"}
-              borderSize={10}
-              size={43}
-              style="character"
-              display={user.name || user.email}
-            />
-          </Dropdown>
+          <DropdownMenu>
+            <DropdownMenuTrigger >
+              <Avatar
+                borderColor={"#F5F5F5"}
+                borderSize={10}
+                size={43}
+                style="character"
+                display={user.name || user.email}
+              />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <ProfileAvatarDropDown user={user} />
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </div>
