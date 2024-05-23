@@ -4,7 +4,6 @@ import { useMutation } from "@apollo/client";
 import { Button, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
 const SignIn = () => {
   const [authInput, setAuthInput] = useState<Partial<UserLoginInput>>({});
   const [signin, { loading, error }] = useMutation(SIGNIN_MUTATION);
@@ -18,13 +17,15 @@ const SignIn = () => {
     try {
       console.log(authInput);
       if (authInput.email && authInput.password) {
-        const result = await signin({
+        const result = (await signin({
           variables: {
             email: authInput.email,
             password: authInput.password,
           },
-        });
-        const token = result.data.token;
+        })) as { data: { signin: { token: string } } };
+
+        const token = result.data.signin.token;
+
         if (token) {
           window.localStorage.setItem("token", token);
           setAuthInput({});

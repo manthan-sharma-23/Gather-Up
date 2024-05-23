@@ -30,7 +30,7 @@ export class AuthService {
         throw new PreconditionFailedException('Resource Already Exists');
       }
 
-      const salt = (await bcrypt.genSalt(10)) || 'pokemonisme';
+      const salt = (await bcrypt.genSalt(10)) || 'pokemonism';
       const hashedPassword = await bcrypt.hash(password, salt);
 
       const createUserQuery = await this.databaseService.user.create({
@@ -41,17 +41,11 @@ export class AuthService {
         },
       });
 
-      await this.databaseService.userCalender.create({
-        data: {
-          userId: createUserQuery.id,
-        },
+      await this.createCalenders({
+        userId: createUserQuery.id,
       });
 
-      await this.databaseService.mergedCalendar.create({
-        data: {
-          userId: createUserQuery.id,
-        },
-      });
+      // if (!calender) throw new GoneException();
 
       const token = this.constructJwtAccessToken(
         createUserQuery.id,
@@ -105,6 +99,43 @@ export class AuthService {
         description: error,
       });
     }
+  }
+
+  private async createCalenders({ userId }: { userId: string }) {
+    const userCalender = await this.databaseService.userCalender.create({
+      data: {
+        userId,
+      },
+    });
+
+    if (!userCalender) return false;
+
+    const mergedCalender = await this.databaseService.mergedCalendar.create({
+      data: {
+        userId,
+        userCalenders: {
+          connect: {
+            id: userCalender.id,
+          },
+        },
+      },
+    });
+
+    if (!mergedCalender) return false;
+
+    const userCalenderPopulation = await this.databaseService.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        userCalenderId: userCalender.id,
+        mergedCalendarId: mergedCalender.id,
+      },
+    });
+
+    if (userCalenderPopulation) return true;
+
+    return false;
   }
 
   private constructJwtAccessToken(id: string, email: string, secret: string) {

@@ -8,6 +8,7 @@ import { AuthModule } from './engine/auth/auth.module';
 import { CommunityModule } from './modules/community-module/community.module';
 import { InviteModule } from './modules/invite-module/invite-module.module';
 import { EventModule } from './modules/event-module/event.module';
+import { UserModule } from './modules/user-module/user.module';
 
 @Module({
   imports: [
@@ -21,8 +22,8 @@ import { EventModule } from './modules/event-module/event.module';
     CommunityModule,
     InviteModule,
     EventModule,
+    UserModule,
   ],
-
   providers: [DatabaseService],
 })
 export class AppModule {}
