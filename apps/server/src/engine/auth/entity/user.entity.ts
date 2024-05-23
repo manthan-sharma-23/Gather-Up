@@ -1,4 +1,5 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { IsEmail } from 'class-validator';
 
 @ObjectType()
 export class User {
@@ -9,9 +10,9 @@ export class User {
   name?: string;
 
   @Field()
+  @IsEmail()
   email: string;
 
   @Field()
   hashedPassword: string;
-  
 }

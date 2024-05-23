@@ -1,11 +1,15 @@
 import { UserRegisterInput } from "@/lib/models/interfaces/auth.page";
+import { useMutation } from "@apollo/client";
 import { Button, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { SIGNUP_MUTATION } from "../../lib/server_calls/gql/mutations/auth/auth.signin";
 
 const SignUp = () => {
   const [authInput, setAuthInput] = useState<Partial<UserRegisterInput>>({});
   const [passwordError, setPasswordError] = useState(false);
+  const [singup, { error }] = useMutation(SIGNUP_MUTATION);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setAuthInput({});
@@ -24,8 +28,30 @@ const SignUp = () => {
 
   const handleSignUp = async () => {
     if (!passwordError) {
-      console.log(authInput);
-      // Perform sign up logic here
+      try {
+        console.log(authInput);
+        if (authInput.email && authInput.password) {
+          const result = (await singup({
+            variables: {
+              name: authInput.name,
+              email: authInput.email,
+              password: authInput.password,
+            },
+          })) as { data: { signup: { token: string } } };
+
+          const token = result.data.signup.token;
+
+          if (token) {
+            window.localStorage.setItem("token", token);
+            setAuthInput({});
+            navigate("/");
+          }
+        } else {
+          alert("Enter a valid email and password");
+        }
+      } catch (err) {
+        console.log("Error during signin :" + error);
+      }
     }
   };
 

@@ -1,5 +1,5 @@
 import { UserLoginInput } from "@/lib/models/interfaces/auth.page";
-import { SIGNIN_MUTATION } from "@/lib/server_calls/gql/queries/auth/auth.signin";
+import { SIGNIN_MUTATION } from "@/lib/server_calls/gql/mutations/auth/auth.signin";
 import { useMutation } from "@apollo/client";
 import { Button, TextField } from "@mui/material";
 import { useEffect, useState } from "react";

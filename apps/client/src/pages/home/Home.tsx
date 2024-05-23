@@ -5,7 +5,7 @@ import { useRecoilValue } from "recoil";
 const Home = () => {
   const user = useRecoilValue(UserAtom);
 
-  return <div>{JSON.stringify(user)}</div>;
+  return <div>{user?.email}</div>;
 };
 
 export default Home;

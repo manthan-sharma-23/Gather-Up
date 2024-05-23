@@ -9,6 +9,7 @@ module.exports = {
   ],
   prefix: "",
   theme: {
+
     container: {
       center: true,
       padding: "2rem",
@@ -17,6 +18,9 @@ module.exports = {
       },
     },
     extend: {
+      colors: {
+        palewhite: "#F5F5F5"
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },

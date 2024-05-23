@@ -9,6 +9,7 @@ import { GqlClient } from "./lib/server_calls/gql/client";
 import RenderLayout from "./components/layouts/RenderLayout";
 import Home from "./pages/home/Home";
 import { RecoilRoot } from "recoil";
+import NavigationLayout from "./components/layouts/NavigationLayout";
 
 function App() {
   return (
@@ -18,7 +19,9 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<RenderLayout />}>
-                <Route index element={<Home />} />
+                <Route path="/" element={<NavigationLayout />}>
+                  <Route index element={<Home />} />
+                </Route>
               </Route>
               <Route path="/auth" element={<AuthLayout />}>
                 <Route path="/auth/login" element={<SignIn />} />
